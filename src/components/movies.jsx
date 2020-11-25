@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+// import logger from "../services/logService";
+import { toast } from "react-toastify";
+
+import { getGenres } from "../services/genreService";
+import { getMovies, deleteMovie } from "../services/movieService";
 
 import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import SearchBox from './searchBox';
+import SearchBox from "./searchBox";
 
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -19,23 +22,25 @@ class Movies extends Component {
     currentPage: 1,
     sortColumn: { path: "title", order: "asc" },
     searchQuery: "",
-    selectedGenre: null
+    selectedGenre: null,
   };
 
   // where you initalize properties or state objects
-  componentDidMount() {
+  async componentDidMount() {
     // _id: "" > map method's key
-    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+    const { data } = await getGenres();
+    const genres = [{ _id: "", name: "All Genres" }, ...data];
 
-    this.setState({ movies: getMovies(), genres: genres });
+    const { data: movies } = await getMovies();
+    this.setState({ movies: movies, genres: genres });
   }
 
   handleGenreSelect = (genre) => {
     this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
   };
 
-  handleSearch = query => {
-    this.setState({ searchQuery: query, selectedGenre: null, currentPage:1 });
+  handleSearch = (query) => {
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
   handleSort = (sortColumn) => {
@@ -50,11 +55,24 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handleDelete = (movie) => {
+  handleDelete = async (movie) => {
+    const originalMovies = this.state.movies;
+
     // New array of movies
-    const movies = this.state.movies.filter((m) => m._id !== movie._id);
+    const movies = originalMovies.filter((m) => m._id !== movie._id);
     // this.setState({ movies: movies });
     this.setState({ movies });
+
+    try {
+      await deleteMovie(movie._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        // logger.log(ex);
+        toast("This movie has already been deleted.");
+      }
+
+      this.setState({ movies: originalMovies });
+    }
   };
 
   handlePageChange = (page) => {
@@ -76,15 +94,15 @@ class Movies extends Component {
     //   selectedGenre && selectedGenre._id
     //     ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
     //     : allMovies;
-    
-    // modified filtering(1-2)    
+
+    // modified filtering(1-2)
     let filtered = allMovies;
     if (searchQuery)
-      filtered = allMovies.filter(m =>
+      filtered = allMovies.filter((m) =>
         m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
     else if (selectedGenre && selectedGenre._id)
-      filtered = allMovies.filter(m => m.genre._id === selectedGenre._id);
+      filtered = allMovies.filter((m) => m.genre._id === selectedGenre._id);
 
     // sorting(2)
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
