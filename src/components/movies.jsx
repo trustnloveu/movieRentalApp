@@ -57,11 +57,8 @@ class Movies extends Component {
 
   handleDelete = async (movie) => {
     const originalMovies = this.state.movies;
-
-    // New array of movies
-    const movies = originalMovies.filter((m) => m._id !== movie._id);
-    // this.setState({ movies: movies });
-    this.setState({ movies });
+    const movies = originalMovies.filter((m) => m._id !== movie._id); // New array of movies
+    this.setState({ movies }); // this.setState({ movies: movies });
 
     try {
       await deleteMovie(movie._id);
@@ -70,7 +67,6 @@ class Movies extends Component {
         // logger.log(ex);
         toast("This movie has already been deleted.");
       }
-
       this.setState({ movies: originalMovies });
     }
   };

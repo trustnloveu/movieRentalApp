@@ -1,14 +1,16 @@
-import config from "../config/config.json";
+import { apiUrl } from "../config/config.json";
 import http from "./httpService";
 // import logger from "./logService";
 // import toast from "react-toastify";
 
+const apiEndpoint = apiUrl + "/movies";
+
 export function getMovies() {
-  return http.get(config.apiEndpoint + "/movies");
+  return http.get(apiEndpoint);
 }
 
 export function getMovie(movieId) {
-  return http.get(config.apiEndpoint + "/movies/" + movieId);
+  return http.get(apiEndpoint + "/" + movieId);
 }
 
 // function saveMovie(movie) {
@@ -27,5 +29,5 @@ export function getMovie(movieId) {
 // }
 
 export function deleteMovie(movieId) {
-  return http.delete(config.apiEndpoint + "/movies/" + movieId);
+  return http.delete(apiEndpoint + "/" + movieId);
 }
