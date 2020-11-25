@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 
 import Input from "./input";
-import Select from "./select"
+import Select from "./select";
 
 class Form extends Component {
   state = {
@@ -39,7 +39,7 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    this.doSumbit();
+    this.doSubmit();
   };
 
   // handleChange
@@ -91,7 +91,7 @@ class Form extends Component {
         onChange={this.handleChange}
         error={errors[name]}
       />
-    )
+    );
   }
 }
 

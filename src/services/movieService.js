@@ -3,31 +3,36 @@ import http from "./httpService";
 // import logger from "./logService";
 // import toast from "react-toastify";
 
+// End-Point
 const apiEndpoint = apiUrl + "/movies";
 
+// URL for getting Single Movie with ID
+function movieUrl(id) {
+  return `${apiEndpoint}/${id}`;
+}
+
+// Get Movies
 export function getMovies() {
   return http.get(apiEndpoint);
 }
 
+// Get Movie
 export function getMovie(movieId) {
-  return http.get(apiEndpoint + "/" + movieId);
+  return http.get(movieUrl(movieId));
 }
 
-// function saveMovie(movie) {
-//   let movieInDb = movies.find((m) => m._id === movie._id) || {};
-//   movieInDb.title = movie.title;
-//   movieInDb.genre = genresAPI.genres.find((g) => g._id === movie.genreId);
-//   movieInDb.numberInStock = movie.numberInStock;
-//   movieInDb.dailyRentalRate = movie.dailyRentalRate;
+// Post or Put
+export function saveMovie(movie) {
+  if (movie._id) {
+    const body = { ...movie };
+    delete body._id;
+    return http.put(movieUrl(movie._id), body);
+  }
 
-//   if (!movieInDb._id) {
-//     movieInDb._id = Date.now().toString();
-//     movies.push(movieInDb);
-//   }
+  return http.post(apiEndpoint, movie);
+}
 
-//   return movieInDb;
-// }
-
+// Delete
 export function deleteMovie(movieId) {
-  return http.delete(apiEndpoint + "/" + movieId);
+  return http.delete(movieUrl(movieId));
 }
