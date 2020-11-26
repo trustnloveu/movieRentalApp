@@ -3,7 +3,6 @@ import Joi from "joi-browser";
 import Form from "./common/form";
 import * as userService from "../services/userService";
 import { toast } from "react-toastify";
-import { textSpanIntersectsWith } from "typescript";
 
 class RegisterForm extends Form {
   state = {
@@ -19,13 +18,15 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      await userService.register(this.state.data);
+      const response = await userService.register(this.state.data);
+      localStorage.setItem("token", response.headers["x-auth-token"]);
+      this.props.history.push("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
-        errors.username = ex.response.data;
+        errors.invalidInfo = ex.response.data;
         this.setState({ errors });
-        toast(`${this.state.errors.username}`);
+        toast(`${this.state.errors.invalidInfo}`);
       }
     }
   };
