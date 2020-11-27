@@ -13,6 +13,7 @@ import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
 import NotFound from "./components/notFound";
+import ProtectedRoute from "./components/common/protectedRoute";
 
 // module
 import auth from "./services/authService";
@@ -38,16 +39,10 @@ class App extends Component {
         <NavBar user={this.state.user} />
         <main className="container">
           <Switch>
-            <Route path="/login" component={LoginForm} />
-            <Route path="/logout" component={Logout} />
             <Route path="/register" component={RegisterForm} />
-            <Route
-              path="/movies/:id"
-              render={(props) => {
-                if (!user) return <Redirect to="/login" />;
-                return <MovieForm {...props} />;
-              }}
-            />
+            <Route path="/logout" component={Logout} />
+            <Route path="/login" component={LoginForm} />
+            <ProtectedRoute path="/movies/:id" component={MovieForm} />
             <Route
               path="/movies"
               render={(props) => <Movies {...props} user={this.state.user} />}
