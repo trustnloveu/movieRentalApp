@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import jwtDecode from "jwt-decode";
 
 // components
 import NavBar from "./components/navBar";
@@ -15,6 +14,9 @@ import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
 import NotFound from "./components/notFound";
 
+// module
+import auth from "./services/authService";
+
 // css
 import "./App.js";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,14 +25,8 @@ class App extends Component {
   state = {};
 
   componentDidMount() {
-    try {
-      const jwt = localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      // console.log(user);
-      this.setState({ user });
-    } catch (ex) {
-      console.log("No token exist in Application Local Storage");
-    }
+    const user = auth.getCurrentUser();
+    this.setState({ user });
   }
 
   render() {

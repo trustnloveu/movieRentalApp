@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { login } from "../services/authService";
+import auth from "../services/authService";
 import { toast } from "react-toastify";
 
 class LoginForm extends Form {
@@ -28,9 +28,7 @@ class LoginForm extends Form {
     //Call the server
     try {
       const { data } = this.state;
-      const { data: jwt } = await login(data.username, data.password);
-      localStorage.setItem("token", jwt); // devTool > Application > Local Storage
-
+      await auth.login(data.username, data.password);
       // this.props.history.push("/");
       window.location = "/"; // redirect
     } catch (ex) {
