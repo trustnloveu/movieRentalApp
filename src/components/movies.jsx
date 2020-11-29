@@ -110,12 +110,12 @@ class Movies extends Component {
 
   // render
   render() {
-    const { length: count } = this.state.movies;
+    // const { length: count } = this.state.movies;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
     const { user } = this.props;
 
-    // no result deafult message
-    if (count === 0) return <p>There're no movies in the database.</p>;
+    // no result deafult message (Not nececssary)
+    // if (count === 0) return <p>There're no movies in the database.</p>;
 
     const { totalCount, data: movies } = this.getPagedData();
 

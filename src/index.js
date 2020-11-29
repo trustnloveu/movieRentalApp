@@ -12,6 +12,8 @@ import logger from "./services/logService";
 // intializing logging service with Sentry
 logger.init();
 
+// console.log("Testing", process.env.REACT_APP_NAME);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

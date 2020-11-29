@@ -1,7 +1,8 @@
 import http from "./httpService";
-import { apiUrl } from "../config/config.json";
+// import { apiUrl } from "../config/config.json";
 
-const apiEndPoint = apiUrl + "/users";
+// apiURrl has deleted
+const apiEndPoint = "/users";
 
 // function userUrl(id) {
 //   return `${apiEndPoint}/${id}`;

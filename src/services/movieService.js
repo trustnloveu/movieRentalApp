@@ -1,10 +1,10 @@
-import { apiUrl } from "../config/config.json";
 import http from "./httpService";
+// import { apiUrl } from "../config/config.json";
 // import logger from "./logService";
 // import toast from "react-toastify";
 
-// End-Point
-const apiEndpoint = apiUrl + "/movies";
+// End-Point > apiURrl has deleted
+const apiEndpoint = "/movies";
 
 // URL for getting Single Movie with ID
 function movieUrl(id) {

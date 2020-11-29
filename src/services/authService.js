@@ -1,8 +1,9 @@
 import http from "./httpService";
-import { apiUrl } from "../config/config.json";
+// import { apiUrl } from "../config/config.json";
 import jwtDecode from "jwt-decode";
 
-const apiEndPoint = apiUrl + "/auth";
+// apiURrl has deleted
+const apiEndPoint = "/auth";
 const tokenKey = "token";
 
 // token > http's header
